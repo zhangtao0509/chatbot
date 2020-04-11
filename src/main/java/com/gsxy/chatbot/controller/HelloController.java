@@ -29,12 +29,6 @@ public class HelloController {
         return "hello";
     }
 
-    @RequestMapping(value = "/getUser")
-    @ResponseBody
-    private User getUser(int id){
-        return userService.getUserById(id);
-    }
-
     @RequestMapping("/thymeleaf")
     public String hello(HttpServletRequest request, @RequestParam(value = "name", defaultValue = "springboot-thymeleaf") String name) {
         request.setAttribute("name", name);
