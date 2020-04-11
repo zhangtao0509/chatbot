@@ -72,8 +72,8 @@
             dataType: "JSON",
             url: '/login',
             success: function (data) {
-                if (data.data === true) {
-                    var url = data['url'];
+                if (data.success == true) {
+                    var url = data.url;
                     info.html('登录成功！<span id="time">3</span>秒后跳转<a href="' + url + '">现在跳转</a>');
                     setInterval(function () {
                         var time = $('#time');

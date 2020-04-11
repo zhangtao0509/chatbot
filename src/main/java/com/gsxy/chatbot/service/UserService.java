@@ -10,5 +10,5 @@ public interface UserService {
 
     User findUserNameByName(User user);
 
-    User  VerifyLogin(User user);
+    Boolean  verifyLogin(String userName,String password);
 }

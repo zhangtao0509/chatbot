@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 @Service
 @Mapper
-public  class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -22,33 +22,31 @@ public  class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User VerifyLogin(User user) {
-        return null;
+    public Boolean verifyLogin(String userName, String password) {
+        return userMapper.verifyLogin(userName, password) > 0 ? true : false;
     }
 
     /**
      * 注册
+     *
      * @param user
      * @return
      */
     @Override
-    public User register(User user)
-    {
-        User result=new User();
+    public User register(User user) {
+        User result = new User();
         result.setSuccess(false);
 
-        User existUser=userMapper.findUserNameByName(result.getName());
-        try
-        {
-            if (existUser !=null){
+        User existUser = userMapper.findUserNameByName(result.getName());
+        try {
+            if (existUser != null) {
                 result.setMsg("用户名已存在！");
-            }
-            else {
+            } else {
                 userMapper.regist(user);
                 result.setMsg("注册成功");
                 result.setSuccess(true);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             result.setMsg(e.getMessage());
         }
@@ -56,21 +54,18 @@ public  class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(User user)
-    {
-        User result=new User();
+    public User login(User user) {
+        User result = new User();
         result.setSuccess(false);
-        Long userId= userMapper.login(user);
-        try
-        {
-            if (userId == null){
+        Long userId = userMapper.login(user);
+        try {
+            if (userId == null) {
                 result.setMsg("用户名或密码不正确");
-            }
-            else {
+            } else {
                 result.setMsg("登录成功！");
                 result.setSuccess(true);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
             result.setMsg(e.getMessage());
 
@@ -78,7 +73,6 @@ public  class UserServiceImpl implements UserService {
 
         return result;
     }
-
 
 
 }

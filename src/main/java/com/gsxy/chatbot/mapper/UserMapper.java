@@ -1,14 +1,14 @@
 package com.gsxy.chatbot.mapper;
 
 import com.gsxy.chatbot.model.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
 public interface UserMapper {
 
-
-    User VerifyLogin(String password);//验证用户密码
+    int verifyLogin(@Param("account") String userName, @Param("pwd") String password);//验证用户密码
 
     User findUserNameByName(String name);//比较是否有相同用户名
 
