@@ -42,6 +42,11 @@ public class ChatController {
      */
     @RequestMapping(value = "/chat")
     public String chat(@RequestParam("account") String account, ModelMap model) {
+        User user = userService.getUser(account);
+        List<Message> messageList = messageService.findMessageList(user.getId());
+        if (!CollectionUtils.isEmpty(messageList)){
+            model.addAttribute("messageList", messageList);
+        }
         model.addAttribute("account", account);
         return "chat";
     }

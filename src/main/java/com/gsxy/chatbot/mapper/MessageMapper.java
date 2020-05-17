@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MessageMapper {
     int saveMessages(@Param("messageList") List<Message> messageList);
+
+    List<Message> findMessageList(int id);
 }

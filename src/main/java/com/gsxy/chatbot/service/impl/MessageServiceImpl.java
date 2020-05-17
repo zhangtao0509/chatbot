@@ -18,4 +18,9 @@ public class MessageServiceImpl implements MessageService {
     public int saveMessages(List<Message> messageList) {
         return messageMapper.saveMessages(messageList);
     }
+
+    @Override
+    public List<Message> findMessageList(int id) {
+        return messageMapper.findMessageList(id);
+    }
 }

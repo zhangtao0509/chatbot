@@ -7,4 +7,6 @@ import java.util.List;
 public interface MessageService {
 
     int saveMessages(List<Message> messageList);
+
+    List<Message> findMessageList(int id);
 }

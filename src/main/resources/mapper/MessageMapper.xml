@@ -9,4 +9,10 @@
         </foreach>
 
     </insert>
+
+    <select id="findMessageList" parameterType="java.lang.Integer" resultType="com.gsxy.chatbot.model.Message">
+        select id,user_id as userId,message_type as messageType,message_content as messageContent, isCustumer as isCustumer
+        from message where user_id=#{id}
+        limit 100
+    </select>
 </mapper>
