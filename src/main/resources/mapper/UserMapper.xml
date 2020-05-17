@@ -5,19 +5,15 @@
         select * from user where id=#{id}
     </select>
     <!--查询用户是否存在，若是存在则提示已存在-->
-    <select id="findUserNameByName" parameterType="java.lang.Integer" resultType="com.gsxy.chatbot.model.User">
-            select u.name,u.password from user_info u where u.name=#{name}
-    </select>
-    <!--用户登录-->
-    <select id="login" parameterType="java.lang.Integer" resultType="com.gsxy.chatbot.model.User">
-      select u.id from user_info u where u.name = #{name} and u.password = #{password}
+    <select id="findUserNameByAccount" parameterType="java.lang.String" resultType="com.gsxy.chatbot.model.User">
+            select u.id,u.account,u.password from user_login u where u.account=#{account}
     </select>
     <!--新增用户加入该注解可以保存对象后查看对象插入id-->
-    <insert id="regist" parameterType="com.gsxy.chatbot.model.User" useGeneratedKeys="true">
-        insert into user_info(name,gender,head_portrait) 
-        values(#{name},#{gender},#{head_portrait})
+    <insert id="register" parameterType="com.gsxy.chatbot.model.User" useGeneratedKeys="true">
+        insert into user_login(account,password)
+        values(#{account},#{pwd})
     </insert>
-
+    <!--登陆验证-->
     <select id="verifyLogin" resultType="java.lang.Integer">
         select COUNT(1) from user_login where account=#{account} and password=#{pwd}
     </select>

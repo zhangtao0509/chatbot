@@ -39,7 +39,7 @@ public class MybatisApplicationConfigure {
         datasource.setName("mybatisDataSourceProperties-default");
         datasource.setMaxActive(100);
         datasource.setInitialSize(20);
-        datasource.setDefaultReadOnly(true);
+        datasource.setDefaultReadOnly(false);
         return datasource;
     }
 

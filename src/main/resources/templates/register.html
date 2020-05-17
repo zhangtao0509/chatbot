@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>login</title>
+    <title>register</title>
     <link rel="stylesheet" href="assets/login/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.css">
     <link rel="stylesheet" href="assets/materialize/css/materialize.min.css" media="screen,projection"/>
@@ -19,7 +19,7 @@
         <div class="card" style="border-radius: 10px">
             <div class="card-block">
                 <!--标题-->
-                <h2 class="card-title"><i class="fa fa-user" aria-hidden="true"></i>用户登录</h2>
+                <h2 class="card-title"><i class="fa fa-user" aria-hidden="true"></i>用户注册</h2>
                 <span class="text-muted text-danger"> </span>
                 <hr>
                 <!--用户输入框-->
@@ -32,15 +32,19 @@
                     <input type="password" class="form-control" placeholder="密码" id="password">
                 </div>
                 <br/>
+                <!--确认密码-->
+                <div class="input-group">
+                    <input type="password" class="form-control" placeholder="确认密码" id="comfimPassword">
+                </div>
                 <br/>
-                <!--登录按钮-->
+                <br/>
+                <!--注册按钮-->
                 <div align="center" style="padding-bottom: 10%">
-                    <button class="btn btn-outline-success" type="button" style="width: 12rem" onclick="login()">登录
+                    <button class="btn btn-outline-success" type="button" style="width: 12rem" onclick="register()">注册
                     </button>
                 </div>
-                <!--注册按钮-->
                 <p>
-                    还没有账号？<a href="/registerPage">立即注册</a>
+                    已有账号？<a href="/">去登陆</a>
                 </p>
             </div>
         </div>
@@ -69,19 +73,25 @@
     var modal = $('#exampleModal');
     var info = $('#modalInfo');
 
-    function login() {
+    function register() {
         var username = $('#username').val();
         var password = $('#password').val();
+        var comfimPassword = $('#comfimPassword').val();
+        if (password!=comfimPassword){
+            info.html('二次密码不一致！');
+            modal.modal('show');
+            return
+        }
         $.ajax({
             type: 'POST',
             data: {account: username, password: password},
             dataType: "JSON",
-            url: '/login',
+            url: '/register',
             success: function (data) {
+                var msg = data.msg;
                 if (data.success == true) {
-                    var url = data.url+"?account="+data.msg;
-                    alert(url);
-                    info.html('登录成功！<span id="time">3</span>秒后跳转<a href="' + url + '">现在跳转</a>');
+                    var url = data.url;
+                    info.html('注册成功！<span id="time">3</span>秒后跳转<a href="' + url + '">现在跳转</a>');
                     setInterval(function () {
                         var time = $('#time');
                         var currentTime = time.text();
@@ -95,7 +105,7 @@
                     }, 1000);
                     modal.modal('show');
                 } else {
-                    info.html('登录失败！请检查密码或用户名是否出错');
+                    info.html('注册失败！' + msg);
                     modal.modal('show');
                 }
             }

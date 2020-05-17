@@ -7,23 +7,22 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 @Service
 @Mapper
 public class UserServiceImpl implements UserService {
+
 
     @Autowired
     private UserMapper userMapper;
 
     @Override
-    public User findUserNameByName(User user) {
-        return null;
+    public Boolean verifyLogin(String account, String password) {
+        return userMapper.verifyLogin(account, password) > 0 ? true : false;
     }
 
     @Override
-    public Boolean verifyLogin(String userName, String password) {
-        return userMapper.verifyLogin(userName, password) > 0 ? true : false;
+    public User getUser(String account) {
+        return userMapper.findUserNameByAccount(account);
     }
 
     /**
@@ -33,46 +32,19 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User register(User user) {
-        User result = new User();
-        result.setSuccess(false);
-
-        User existUser = userMapper.findUserNameByName(result.getName());
+    public String register(User user) {
+        User existUser = userMapper.findUserNameByAccount(user.getAccount());
         try {
             if (existUser != null) {
-                result.setMsg("用户名已存在！");
+                return "用户名已存在";
             } else {
-                userMapper.regist(user);
-                result.setMsg("注册成功");
-                result.setSuccess(true);
+                userMapper.register(user);
+                return "success";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result.setMsg(e.getMessage());
+            return "服务内部错误，请联系开发人员";
         }
-        return result;
     }
-
-    @Override
-    public User login(User user) {
-        User result = new User();
-        result.setSuccess(false);
-        Long userId = userMapper.login(user);
-        try {
-            if (userId == null) {
-                result.setMsg("用户名或密码不正确");
-            } else {
-                result.setMsg("登录成功！");
-                result.setSuccess(true);
-            }
-        } catch (Exception e) {
-            e.getStackTrace();
-            result.setMsg(e.getMessage());
-
-        }
-
-        return result;
-    }
-
 
 }

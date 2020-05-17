@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="assets/js/jquery-1.10.2.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>PC机器人聊天界面</title>
+    <input type="hidden" th:value="${account}" id="account"/>
+    <title>聊天界面</title>
     <style>
         .box {
             width: 100%;
@@ -145,19 +147,19 @@
 <div class="box">
     <div id="content">
         <div class="info_box">
-
-            <div class="info_r">
-                <img src="img/2.jpg" class='pic_r'>
-                <span class='infor'>Python是一种跨平台的计算机程序设计语言。是一种面向对象的动态类型语言，最初被设计用于编写自动化脚本(shell)，随着版本的不断更新和语言新功能的添加，越来越多被用于独立的、大型项目的开发。</span>
-            </div>
-            <div class="info_l">
-                <img src="img/1.jpg" class='pic_l'>
-                <span class='infoo'>在您开始之前，在你的计算机将需要Python，但您可能不需要下载它。首先检查(在命令行窗口输入python)有没有安装Python!如果你看到了一个Python解释器的响应，那么就能在它的显示窗口中得到一个版本号。通常较新的版本都可以做到Python的向前兼容。</span>
-            </div>
+            <!--此处用于回显消息-->
+            <!--<div class="info_r">-->
+                <!--<img src="static/assets/img/userDefault.jpg" class='pic_r'>-->
+                <!--<span class='infor'>Python是一种跨平台的计算机程序设计语言。是一种面向对象的动态类型语言，最初被设计用于编写自动化脚本(shell)，随着版本的不断更新和语言新功能的添加，越来越多被用于独立的、大型项目的开发。</span>-->
+            <!--</div>-->
+            <!--<div class="info_l">-->
+                <!--<img src="static/assets/img/robot.jpeg" class='pic_l'>-->
+                <!--<span class='infoo'>在您开始之前，在你的计算机将需要Python，但您可能不需要下载它。首先检查(在命令行窗口输入python)有没有安装Python!如果你看到了一个Python解释器的响应，那么就能在它的显示窗口中得到一个版本号。通常较新的版本都可以做到Python的向前兼容。</span>-->
+            <!--</div>-->
 
         </div>
         <form action="">
-            <img src="img/1.jpg" id='pic'>
+            <img src="static/assets/img/userDefault.jpg" id='pic'>
             <input type="text" placeholder='尽情畅聊吧' id='inp'>
             <input type="button" value='发送' id='send'>
         </form>
@@ -174,23 +176,38 @@
     var onoff = true;
     pic.onclick = function () {
         if (onoff) {
-            pic.src = 'img/2.jpg';
+            pic.src = 'static/assets/img/userDefault.jpg';
             onoff = false;
         } else {
-            pic.src = 'img/1.jpg';
+            pic.src = 'static/assets/img/robot.jpeg';
             onoff = true;
         }
     };
 
     send.onclick = function () {
+        var robotMessage="你说啥？";
+        var account=$("#account").val();
         if (txt.value === '') {
             alert('请输入内容');
         } else {
-
             var nDiv = document.createElement('div');
             var spans = document.createElement('span');
             var imgs = document.createElement('img');
             var sTxt = document.createTextNode(txt.value);
+
+            $.ajax({
+                type: 'GET',
+                data: {account: account, message: sTxt.wholeText},
+                dataType: "JSON",
+                url: '/send',
+                async: false,
+                success: function (data) {
+                    if (data.success==true) {
+                        robotMessage = data.msg;
+                    }
+                }
+            });
+
             var info_box = document.getElementsByClassName('info_box')[0];
             spans.appendChild(sTxt);
             nDiv.appendChild(spans);
@@ -199,12 +216,12 @@
             info_box.insertBefore(nDiv, info_box.lastChild);
             spans.className = 'infor';
             nDiv.className = 'info_r';
-            imgs.src = 'img/2.jpg';
+            imgs.src = 'static/assets/img/userDefault.jpg';
 
             var nDiv = document.createElement('div');
             var spans = document.createElement('span');
             var imgs = document.createElement('img');
-            var sTxt = document.createTextNode("你说啥？");
+            var sTxt = document.createTextNode(robotMessage);
             var info_box = document.getElementsByClassName('info_box')[0];
             spans.appendChild(sTxt);
             nDiv.appendChild(spans);
@@ -213,7 +230,7 @@
             info_box.insertBefore(nDiv, info_box.lastChild);
             spans.className = 'infol';
             nDiv.className = 'info_l';
-            imgs.src = 'img/1.jpg';
+            imgs.src = 'static/assets/img/robot.jpeg';
             /*
                     if(onoff==true){
                         spans.className='infor';

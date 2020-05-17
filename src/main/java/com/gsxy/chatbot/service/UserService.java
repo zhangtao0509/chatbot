@@ -4,11 +4,9 @@ import com.gsxy.chatbot.model.User;
 
 public interface UserService {
 
-    User register(User user);
+    String register(User user);
 
-    User login(User user);
+    Boolean  verifyLogin(String account,String password);
 
-    User findUserNameByName(User user);
-
-    Boolean  verifyLogin(String userName,String password);
+    User getUser(String account);
 }

@@ -18,9 +18,6 @@ import java.util.List;
 public class HelloController {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private TuLingApi tuLingApi;
 
     @RequestMapping(value = "/hello")
